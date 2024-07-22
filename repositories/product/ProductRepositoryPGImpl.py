@@ -75,4 +75,4 @@ class ProductRepositoryPGImpl(AbstractProductRepository, SingletonMixin):
                     FROM products
                     ORDER BY id DESC''')
 
-        return [Product.from_record(record) for record in records]
+        return [Product(**record) for record in records]
