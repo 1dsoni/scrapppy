@@ -37,8 +37,9 @@ class ProductRepositoryLocalFileImpl(AbstractProductRepository, SingletonMixin):
     async def set(self, key: str, value: Any) -> None:
         async with self._lock:
             data = await self._read_file()
-            data[key] = value
-            await self._write_file(data)
+            if key not in data:
+                data[key] = value
+                await self._write_file(data)
 
     async def save(self, product: Product) -> Product:
         await self.set(product.uid, product.dict())
