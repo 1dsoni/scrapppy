@@ -1,0 +1,18 @@
+tmp/**
+stderr.log
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+venv/
+
+.idea
+
+db.sqlite3
+
+static
+
+.git
+
+.gitignore
