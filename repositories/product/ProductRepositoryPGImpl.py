@@ -1,11 +1,12 @@
 import logging
 from contextlib import asynccontextmanager
+from typing import List
 
 import asyncpg
 
-from singleton_mixin import SingletonMixin
 from models import Product
 from repositories.product.AbstractProductRepository import AbstractProductRepository
+from singleton_mixin import SingletonMixin
 
 logger = logging.getLogger(__name__)
 
@@ -66,3 +67,12 @@ class ProductRepositoryPGImpl(AbstractProductRepository, SingletonMixin):
                                product.image)
 
         return product
+
+    async def fetch_all(self) -> List[Product]:
+        async with self.get_db_conn() as conn:
+            records = await conn.fetch('''
+                    SELECT *
+                    FROM products
+                    ORDER BY id DESC''')
+
+        return [Product.from_record(record) for record in records]

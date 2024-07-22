@@ -169,3 +169,6 @@ class DentalStallProductsScrapper:
             await self.cache.set(item_identifier_long, str(product.price))
         except Exception as e:
             logger.error(f"Error saving product in cache {item_identifier_long}: {e}")
+
+    async def get_scrapped_data(self):
+        return await self.product_repository.fetch_all()

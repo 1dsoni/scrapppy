@@ -18,6 +18,12 @@ def get_token(token: str):
 
 @router.post("/scrape/{project}/execute")
 async def scrape_project_execute(project: str):
-    scraper_helper = ScrapperHelper(project="dental_stall")
+    scraper_helper = ScrapperHelper(project=project)
     await scraper_helper.execute_scraper()
     return {"ok": True}
+
+
+@router.get("/scrape/{project}/data")
+async def get_scraped_project_data(project: str):
+    scraper_helper = ScrapperHelper(project=project)
+    return {"data": await scraper_helper.get_scrapped_data()}

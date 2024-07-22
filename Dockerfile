@@ -14,4 +14,6 @@ ENV PYTHONUNBUFFERED 1
 
 EXPOSE 8000
 
+RUN chmod +x /code/web_server.sh
+
 CMD ["/code/web_server.sh"]

@@ -2,7 +2,7 @@ import asyncio
 import json
 import logging
 import os
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 import aiofiles
 
@@ -43,3 +43,7 @@ class ProductRepositoryLocalFileImpl(AbstractProductRepository, SingletonMixin):
     async def save(self, product: Product) -> Product:
         await self.set(product.uid, product.dict())
         return product
+
+    async def fetch_all(self) -> List[Product]:
+        records = await self._read_file()
+        return [Product(**record) for key, record in records.items()]

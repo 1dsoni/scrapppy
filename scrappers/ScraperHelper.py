@@ -1,17 +1,20 @@
 from scrappers.DentalStallProductsScrapper import DentalStallProductsScrapper
+from scrappers.constants import ScrapperType
 
 
 class ScrapperHelper:
 
     def __init__(self, project):
         self.project = project
+        self.scrapper = None
+        if self.project == ScrapperType.dental_stall:
+            self.scrapper = DentalStallProductsScrapper()
 
-    async def execute_scraper(self):
-        scrapper = None
-        if self.project == 'dental_stall':
-            scrapper = DentalStallProductsScrapper()
-
-        if not scrapper:
+        if not self.scrapper:
             raise NotImplementedError(f"scraper for {self.project} is not implemented")
 
-        await scrapper.scrape()
+    async def execute_scraper(self):
+        await self.scrapper.scrape()
+
+    async def get_scrapped_data(self):
+        return await self.scrapper.get_scrapped_data()
