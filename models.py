@@ -1,6 +1,11 @@
 from pydantic import BaseModel
 
 
+class ProductScraperConfig(BaseModel):
+    max_page: int
+    proxy: str
+
+
 class Product(BaseModel):
     uid: str
     project: str

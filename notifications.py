@@ -11,4 +11,4 @@ class AbstractNotifier(abc.ABC):
 class ConsoleNotifier(AbstractNotifier):
 
     def notify(self, message):
-        print(message)
+        print(f"TRIGGERED CONSOLE NOTIFIER: message: {message}")

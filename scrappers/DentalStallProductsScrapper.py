@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 from cache.AbstractCacheStore import AbstractCacheStore
 from cache.CacheStoreFactory import CacheStoreFactory
 from cache.constants import CacheStoreBackend
-from models import Product
+from models import Product, ProductScraperConfig
 from notifications import ConsoleNotifier
 from repositories.product.AbstractProductRepository import AbstractProductRepository
 from repositories.product.ProductRepositoryFactory import ProductRepositoryFactory
@@ -46,12 +46,18 @@ class DentalStallProductsScrapper:
         self.max_page_load_retries = max_page_load_retries
         self.max_page = max_page
 
-    async def scrape(self):
+    async def scrape(self, scraper_config: ProductScraperConfig):
         logger.error("start to scrape")
         session = aiohttp.ClientSession(headers=self.USER_AGENT_HEADER)
 
+        if scraper_config.proxy:
+            self.proxy = scraper_config.proxy
+
         if self.proxy:
             session.proxies = {"http": self.proxy, "https": self.proxy}
+
+        if scraper_config.max_page:
+            self.max_page = scraper_config.max_page
 
         await self._scrape(session)
         await session.close()
